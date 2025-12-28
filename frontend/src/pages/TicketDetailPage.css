@@ -1,0 +1,44 @@
+.ticket-detail-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 8px;
+  }
+  
+  .ticket-poster {
+    width: 40%;
+    border-radius: 10px;
+  }
+  
+  .ticket-info {
+    flex: 1;
+  }
+  
+  .description {
+    font-style: italic;
+    margin-top: 10px;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+    color: #e60000;
+    font-weight: bold;
+  }
+  
+  .book-button {
+    padding: 10px 15px;
+    background-color: #e60000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+    border-radius: 5px;
+  }
+  
+  .book-button:hover {
+    background-color: #b30000;
+  }
+  

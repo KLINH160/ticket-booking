@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 1. Cơ sở dữ liệu MongoDB (Dùng chung)
+  mongo:
+    image: mongo:latest
+    container_name: mongodb_container
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # 2. Bộ nhớ đệm Redis (Cho Ticket Service)
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # 3. Auth Service (Xác thực)
+  auth-service:
+    build: ./auth-service
+    container_name: auth_service
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGO_URI=mongodb://mongo:27017/auth_db
+      - JWT_SECRET=sieu_bi_mat
+    depends_on:
+      - mongo
+
+  # 4. Ticket Service (Quản lý vé)
+  ticket-service:
+    build: ./ticket-service
+    container_name: ticket_service
+    ports:
+      - "5002:5002"
+    environment:
+      - PORT=5002
+      - MONGO_URI=mongodb://mongo:27017/ticket_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+
+  # 5. API Gateway (Cổng chính)
+  api-gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - AUTH_SERVICE_URL=http://auth-service:5001
+      - TICKET_SERVICE_URL=http://ticket-service:5002
+      - PAYMENT_SERVICE_URL=http://payment-service:5003
+    depends_on:
+      - auth-service
+      - ticket-service
+
+volumes:
+  mongo_data:
