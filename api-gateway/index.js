@@ -10,7 +10,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 // Lấy địa chỉ từ biến môi trường (được set trong docker-compose.yml)
-// Nếu chạy Docker, nó sẽ là "http://auth-service:5001"
+
 const AUTH_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:5001';
 const TICKET_URL = process.env.TICKET_SERVICE_URL || 'http://localhost:5002';
 const PAYMENT_URL = process.env.PAYMENT_SERVICE_URL || 'http://localhost:5003';
